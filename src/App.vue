@@ -1,18 +1,21 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view />
+  <div id="app">
+    <router-view />
+    <button @click="showModal = !showModal">Open Modal</button>
+    <teleport to="body">
+      <teleportModal v-if="showModal" @close="showModal = false">
+        <h1>Hello Teleport!</h1>
+        <p>This content is teleported to the body element.</p>
+      </teleportModal>
+    </teleport>
+  </div>
 </template>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 1024px;
 }
 
 nav {
@@ -28,3 +31,9 @@ nav a.router-link-exact-active {
   color: #42b983;
 }
 </style>
+<script setup lang="ts">
+import { ref } from "vue";
+import teleportModal from "@/components/Model.vue";
+
+const showModal = ref(false);
+</script>
