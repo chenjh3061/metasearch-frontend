@@ -31,7 +31,6 @@
       size="large"
       @search="onSearch"
     />
-    <!--    {{ JSON.stringify(postList) }}-->
     <MyDivider />
     <a-tabs v-model:activeKey="activeKey" @change="onTabChange">
       <a-tab-pane key="post" tab="文章">
@@ -51,6 +50,7 @@
       </a-tab-pane>
     </a-tabs>
   </div>
+  <see-battery />
 </template>
 
 <script setup lang="ts">
@@ -64,6 +64,7 @@ import myAxios from "@/plugins/myAxios";
 import AboutView from "@/pages/AboutView.vue";
 import { message } from "ant-design-vue";
 import CropDiseaseDetection from "@/components/personal-component/CropDiseaseDetection.vue";
+import SeeBattery from "@/components/personal-component/SeeBattery.vue";
 
 const postList = ref([]);
 const userList = ref([]);

@@ -1,6 +1,8 @@
 <template>
   <div id="app">
+    <GlobalHeader />
     <router-view />
+    <float-buttons />
     <button @click="showModal = !showModal">Open Modal</button>
     <teleport to="body">
       <teleportModal v-if="showModal" @close="showModal = false">
@@ -14,7 +16,7 @@
 <style>
 #app {
   margin: 0 auto;
-  padding: 20px;
+  padding: 0px 20px 20px 20px;
   max-width: 1024px;
 }
 
@@ -33,7 +35,9 @@ nav a.router-link-exact-active {
 </style>
 <script setup lang="ts">
 import { ref } from "vue";
-import teleportModal from "@/components/Model.vue";
+import GlobalHeader from "@/components/personal-component/globlaHeader.vue";
+import TeleportModal from "@/components/Model.vue";
+import FloatButtons from "@/components/personal-component/FloatButtons.vue";
 
 const showModal = ref(false);
 </script>

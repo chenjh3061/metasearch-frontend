@@ -73,7 +73,7 @@ const beforeUpload = (file: UploadProps["fileList"][number]) => {
   if (!isLt2M) {
     message.error("Image must smaller than 2MB!");
   }
-  return isJpgOrPng && isLt2M;
+  return isTypeRight && isLt2M;
 };
 </script>
 
@@ -85,6 +85,7 @@ const beforeUpload = (file: UploadProps["fileList"][number]) => {
 .avatar-uploader > .ant-upload {
   width: 128px;
   height: 128px;
+  display: inline-block;
 }
 
 .ant-upload-select-picture-card i {

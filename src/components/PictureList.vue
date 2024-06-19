@@ -1,21 +1,14 @@
 <template>
-  <a-list
-    item-layout="horizontal"
-    :grid="{ gutter: 16, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 3 }"
-    :data-source="props.pictureList"
-  >
-    <!--   TODO：瀑布流格式-->
-    <template #renderItem="{ item }">
-      <a-list-item>
-        <a-card hoverable>
-          <template #cover>
-            <img alt="image" :src="item.url" />
-          </template>
-          <a-card-meta :title="item.title" />
-        </a-card>
-      </a-list-item>
-    </template>
-  </a-list>
+  <div class="masonry">
+    <div class="masonry-item" v-for="item in props.pictureList" :key="item.id">
+      <a-card hoverable>
+        <template #cover>
+          <img alt="image" :src="item.url" />
+        </template>
+        <a-card-meta :title="item.title" />
+      </a-card>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -31,11 +24,23 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <style scoped>
-a-list {
-  display: grid;
+.masonry {
+  column-count: 4;
+  column-gap: 16px;
 }
-.img {
-  width: 200px;
-  height: 200px;
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 16px;
+}
+
+a-card {
+  display: block;
+  margin-bottom: 16px;
+}
+
+img {
+  width: 100%;
+  height: auto;
 }
 </style>
