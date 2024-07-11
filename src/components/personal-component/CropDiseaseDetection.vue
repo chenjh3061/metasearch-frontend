@@ -19,6 +19,8 @@
         <div class="ant-upload-text">Upload</div>
       </div>
     </a-upload-dragger>
+    <a-spin :spinning="loading" :indicator="indicator" />
+    <a-switch v-model:checked="loading" />
   </div>
   <div class="description">
     用户在此上传想要识别的作物叶片图，注意保证图片清晰，病患部位明显，叶片占画面比例80%以上。
@@ -31,10 +33,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { h, ref } from "vue";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons-vue";
 import type { UploadChangeParam, UploadProps } from "ant-design-vue";
 import { message } from "ant-design-vue";
+import LoadingHamster from "@/components/personal-component/LoadingHamster.vue";
 
 function getBase64(img: Blob, callback: (base64Url: string) => void) {
   const reader = new FileReader();
@@ -46,6 +49,13 @@ const fileList = ref([]);
 const loading = ref<boolean>(false);
 const imageUrl = ref<string>("");
 const results = ref("apple");
+
+const indicator = h(LoadingHamster, {
+  style: {
+    fontSize: "24px",
+  },
+  spin: true,
+});
 const handleChange = (info: UploadChangeParam) => {
   if (info.file.status === "uploading") {
     loading.value = true;
