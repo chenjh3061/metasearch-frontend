@@ -13,7 +13,7 @@
             name="username"
             rules="[ { required: true, message:'请输入用户名' } ]"
           >
-            <a-input v-model="loginForm.username" placeholder="用户名" />
+            <a-input v-model:value="loginForm.username" placeholder="用户名" />
           </a-form-item>
           <a-form-item
             label="密码"
@@ -21,7 +21,7 @@
             rules="[ { required: true, message: '请输入密码' } ]"
           >
             <a-input
-              v-model="loginForm.password"
+              v-model:value="loginForm.password"
               type="password"
               placeholder="密码"
             />
@@ -60,9 +60,13 @@ const handleCancel = () => {
 
 // 处理登录操作
 const handleLogin = async () => {
-  // 你可以在这里添加实际的登录逻辑，例如调用 API
-  console.log("用户名:", loginForm.value.username);
-  console.log("密码:", loginForm.value.password);
+  // 表单数据
+  console.log("表单数据", loginForm.value);
+
+  if (!loginForm.value.username || !loginForm.value.password) {
+    console.warn("用户名或密码为空");
+    return;
+  }
 
   try {
     const res = await UserControllerService.userLoginUsingPost({
@@ -71,6 +75,7 @@ const handleLogin = async () => {
     });
 
     if (res.code === 0) {
+      setCache("userInfo", loginForm.value);
       // 假设登录成功，关闭模态框
       emit("update:isVisible", false);
       // 触发父组件的登录事件

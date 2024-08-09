@@ -26,7 +26,8 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import type { PropType } from "vue"; // 确保导入PropType
-import { defineProps } from "vue"; // 确保导入defineProps
+import { defineProps } from "vue";
+import { getCache } from "@/common/cache";
 
 const props = defineProps({
   user: {
@@ -38,7 +39,8 @@ const props = defineProps({
 const router = useRouter();
 
 const goToProfile = () => {
-  router.push("/profile");
+  console.log("goToProfile:" + getCache("userInfo").value);
+  router.push("/userPage");
 };
 
 const logout = () => {

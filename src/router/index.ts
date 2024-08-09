@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import IndexPage from "@/pages/IndexPage.vue";
+import UserPage from "@/components/personal-pages/UserPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,6 +21,10 @@ const routes: Array<RouteRecordRaw> = [
           import(/* webpackChunkName: "about" */ "@/pages/AboutView.vue"),
       },
     ],
+  },
+  {
+    path: "/userPage",
+    component: UserPage,
   },
 ];
 

@@ -34,6 +34,9 @@
     <MyDivider />
     <a-spin :spinning="loadingInstance" tip="正在加载中...">
       <a-tabs v-model:activeKey="activeKey" @change="onTabChange">
+        <a-tab-pane key="index" tab="主页">
+          <MetaIndex />
+        </a-tab-pane>
         <a-tab-pane key="post" tab="文章">
           <PostList :post-list="postList" />
         </a-tab-pane>
@@ -45,6 +48,9 @@
         </a-tab-pane>
         <a-tab-pane key="CropDiseaseDetective" tab="作物病虫害识别(beta)">
           <CropDiseaseDetection />
+        </a-tab-pane>
+        <a-tab-pane key="map" tab="地图">
+          <MapPage />
         </a-tab-pane>
         <a-tab-pane key="about" tab="关于">
           <AboutView />
@@ -67,6 +73,9 @@ import AboutView from "@/pages/AboutView.vue";
 import { message } from "ant-design-vue";
 import CropDiseaseDetection from "@/components/personal-component/CropDiseaseDetection.vue";
 import SeeBattery from "@/components/personal-component/SeeBattery.vue";
+import MapPage from "@/components/personal-pages/MapPage.vue";
+import _ from "lodash";
+import MetaIndex from "@/MetaIndex.vue";
 
 const postList = ref([]);
 const userList = ref([]);
@@ -133,6 +142,19 @@ const loadAllData = (params: any) => {
     //console.log(res);
   });
 };
+// 防抖函数
+const debouncedRequest = _.debounce((query: any, type: string) => {
+  myAxios.post("search/all", query).then((res: any) => {
+    if (type === "post") {
+      postList.value = res.dataList;
+    } else if (type === "user") {
+      userList.value = res.dataList;
+    } else if (type === "picture") {
+      pictureList.value = res.dataList;
+    }
+    //console.log(res);
+  });
+}, 1000);
 /**
  * 加载单类型数据
  * @param params
@@ -148,16 +170,7 @@ const loadData = (params: any) => {
     type,
     searchText: params.text,
   };
-  myAxios.post("search/all", query).then((res: any) => {
-    if (type === "post") {
-      postList.value = res.dataList;
-    } else if (type === "user") {
-      userList.value = res.dataList;
-    } else if (type === "picture") {
-      pictureList.value = res.dataList;
-    }
-    //console.log(res);
-  });
+  debouncedRequest(query, type);
 };
 //首次请求
 loadAllData(initSearchParams);

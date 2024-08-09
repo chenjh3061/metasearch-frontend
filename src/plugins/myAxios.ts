@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+import _ from "lodash";
 import { ref } from "vue";
 
 const instance = axios.create({
@@ -41,4 +42,19 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// 包装axios请求函数，实现防抖
+function debounceRequest(func: any, wait: number): any {
+  return _.debounce((...args: any[]) => {
+    return new Promise((resolve, reject) => {
+      func(...args)
+        .then((response: AxiosResponse) => resolve(response))
+        .catch((error: any) => reject(error));
+    });
+  }, wait);
+}
+
+// 包装axios请求函数，实现节流
+const debouncedGet = debounceRequest(instance.get, 1000);
+const debouncedPost = debounceRequest(instance.post, 1000);
 export default instance;

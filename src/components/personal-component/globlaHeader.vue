@@ -17,6 +17,7 @@
 import { ref } from "vue";
 import LoginModal from "@/components/personal-component/loginModal.vue";
 import UserMenu from "@/components/personal-component/UserMenu.vue";
+import { getCache } from "@/common/cache";
 
 // 用户数据
 const user = ref();
@@ -29,10 +30,7 @@ const toggleLoginModal = () => {
 const handleLogin = (credentials: { username: string; password: string }) => {
   console.log("登录成功:", credentials);
   // 你可以在这里添加实际的登录逻辑，例如调用 API
-  user.value = {
-    username: credentials.username,
-    avatar: "https://via.placeholder.com/32",
-  };
+  user.value = getCache("userInfo");
   showLoginModal.value = false;
 };
 </script>
