@@ -11,33 +11,17 @@
   <div id="container"></div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { onMounted, onUnmounted, ref } from "vue";
 import AMapLoader from "@amap/amap-jsapi-loader";
 
 const address = ref("");
-let map: {
-  plugin: (
-    arg0: string[],
-    arg1: {
-      (): void;
-      (): void;
-      (): void;
-      (): void;
-      (): void;
-      (): void;
-      (): void;
-    }
-  ) => void;
-  addControl: (arg0: any) => void;
-  destroy: () => void;
-} | null = null;
-let geocoder: any;
+let map = null;
 
-window._AMapSecurityConfig = {
-  securityJsCode: "0f09299057858403ca371050ff96ed57",
-};
 onMounted(() => {
+  window._AMapSecurityConfig = {
+    securityJsCode: "0f09299057858403ca371050ff96ed57",
+  };
   AMapLoader.load({
     // 申请好的Web端开发者Key，首次调用 load 时必填
     key: "a4887a4b718a39aa7e85a964fe865f87",
@@ -94,9 +78,20 @@ onMounted(() => {
         map.addControl(new AMap.MapType()); //实现默认图层与卫星图、实施交通图层之间切换的控件
       });
       // 添加搜索控件
-      map.plugin(["AMap.PlaceSearch"], function () {
-        map.addControl(new AMap.PlaceSearch());
-      });
+      // map.plugin(["AMap.PlaceSearch"], function () {
+      //   map.addControl(new AMap.PlaceSearch());
+      //   var PlaceSearchOptions = {
+      //     city: "北京", //城市，默认全国
+      //     type: "",
+      //     pageSize: 10, //单页显示结果条数，默认10
+      //     pageIndex: 1, //页码，默认1
+      //     extensions: "base", //返回结果类型，base表示只返回基本信息，all表示返回所有信息
+      //   };
+      //   var MSearch = new AMap.PlaceSearch(PlaceSearchOptions); //构造PlaceSearch类
+      //   // eslint-disable-next-line no-undef
+      //   AMap.event.addListener(MSearch, "complete", keywordSearch_CallBack); //返回结果
+      //   MSearch.search("方恒国际中心"); //关键字查询
+      // });
       // 灵活点标记
       var marker = new AMap.ElasticMarker();
       map.addControl(marker);
@@ -154,25 +149,10 @@ onMounted(() => {
       map.addControl(weather);
       geocoder = new AMap.Geocoder({ city: "" });
     })
-    .catch((e: any) => {
+    .catch((e) => {
       console.log(e);
     });
 });
-// const search = () => {
-//   geocoder.getLocation(address.value, (status: any, result: any) => {
-//     console.log("result", address.value, status, result);
-//     if (status === "complete" && result.info === "OK") {
-//       // result中对应详细地理坐标信息
-//       console.log("result", result);
-//       console.log("result", result.geocodes[0].location);
-//       let lngLat = [result.geocodes[0].location.lng, result.geocodes[0].location.lat];
-//       console.log("result", lngLat);
-//       locationArr.value = lngLat;
-//     } else {
-//       console.error("查询失败");
-//     }
-//   });
-// };
 
 onUnmounted(() => {
   map?.destroy();

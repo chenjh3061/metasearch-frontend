@@ -7,36 +7,39 @@ export function useBattery() {
     battery.value = batteryManager;
   }
 
+  function handleBatteryChange() {
+    updateBatteryStatus(battery.value);
+  }
+
   onMounted(() => {
     navigator.getBattery().then((batteryManager) => {
       updateBatteryStatus(batteryManager);
+      battery.value = batteryManager;
 
-      batteryManager.addEventListener("chargingchange", () =>
-        updateBatteryStatus(batteryManager)
+      batteryManager.addEventListener("chargingchange", handleBatteryChange);
+      batteryManager.addEventListener("levelchange", handleBatteryChange);
+      batteryManager.addEventListener(
+        "chargingtimechange",
+        handleBatteryChange
       );
-      batteryManager.addEventListener("levelchange", () =>
-        updateBatteryStatus(batteryManager)
-      );
-      batteryManager.addEventListener("chargingtimechange", () =>
-        updateBatteryStatus(batteryManager)
-      );
-      batteryManager.addEventListener("dischargingtimechange", () =>
-        updateBatteryStatus(batteryManager)
+      batteryManager.addEventListener(
+        "dischargingtimechange",
+        handleBatteryChange
       );
     });
   });
 
   onUnmounted(() => {
     if (battery.value) {
-      battery.value.removeEventListener("chargingchange", updateBatteryStatus);
-      battery.value.removeEventListener("levelchange", updateBatteryStatus);
+      battery.value.removeEventListener("chargingchange", handleBatteryChange);
+      battery.value.removeEventListener("levelchange", handleBatteryChange);
       battery.value.removeEventListener(
         "chargingtimechange",
-        updateBatteryStatus
+        handleBatteryChange
       );
       battery.value.removeEventListener(
         "dischargingtimechange",
-        updateBatteryStatus
+        handleBatteryChange
       );
     }
   });

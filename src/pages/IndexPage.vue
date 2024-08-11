@@ -58,7 +58,7 @@
       </a-tabs>
     </a-spin>
   </div>
-  <see-battery />
+  <!--  <see-battery />-->
 </template>
 
 <script setup lang="ts">
@@ -75,12 +75,13 @@ import CropDiseaseDetection from "@/components/personal-component/CropDiseaseDet
 import SeeBattery from "@/components/personal-component/SeeBattery.vue";
 import MapPage from "@/components/personal-pages/MapPage.vue";
 import _ from "lodash";
-import MetaIndex from "@/MetaIndex.vue";
-
+import MetaIndex from "@/pages/MetaIndex.vue";
+import { useUser } from "@/Store/user";
 const postList = ref([]);
 const userList = ref([]);
 const pictureList = ref([]);
 
+const userStore = useUser();
 const showModal = ref(false);
 watchEffect(() => {
   console.log(showModal.value);
@@ -180,6 +181,7 @@ const onSearch = (value: string) => {
   router.push({
     query: { ...searchParams.value },
   });
+  console.log(userStore.searchHistory.push(value));
   loadData(searchParams.value);
 };
 const onTabChange = (key: string) => {
