@@ -15,8 +15,8 @@
 </template>
 
 <script setup lang="ts">
-import GaodeMap from "@/components/personal-component/GaodeMap.vue";
-import AliMap from "@/components/personal-component/AliMap.vue";
+import GaodeMap from "@/components/personal-component/plugins/GaodeMap.vue";
+import AliMap from "@/components/personal-component/plugins/AliMap.vue";
 import { ref } from "vue";
 
 const changeMap = ref(false);

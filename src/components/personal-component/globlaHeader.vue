@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import LoginModal from "@/components/personal-component/loginModal.vue";
+import LoginModal from "@/components/personal-component/modals/loginModal.vue";
 import UserMenu from "@/components/personal-component/UserMenu.vue";
 import { getCache } from "@/common/cache";
 

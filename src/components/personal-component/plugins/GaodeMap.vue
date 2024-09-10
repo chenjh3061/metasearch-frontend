@@ -61,9 +61,9 @@ onMounted(() => {
         center: [116.397428, 39.90923],
       });
       // 添加工具条
-      //map?.addControl(new AMap.ToolBar());
       map.plugin(["AMap.ToolBar"], function () {
-        map.addControl(new AMap.ToolBar());
+        const tool = new AMap.ToolBar();
+        map.addControl(tool);
       });
       map.plugin(["AMap.Scale"], function () {
         map.addControl(new AMap.Scale()); // 比例尺条控件
@@ -78,20 +78,20 @@ onMounted(() => {
         map.addControl(new AMap.MapType()); //实现默认图层与卫星图、实施交通图层之间切换的控件
       });
       // 添加搜索控件
-      // map.plugin(["AMap.PlaceSearch"], function () {
-      //   map.addControl(new AMap.PlaceSearch());
-      //   var PlaceSearchOptions = {
-      //     city: "北京", //城市，默认全国
-      //     type: "",
-      //     pageSize: 10, //单页显示结果条数，默认10
-      //     pageIndex: 1, //页码，默认1
-      //     extensions: "base", //返回结果类型，base表示只返回基本信息，all表示返回所有信息
-      //   };
-      //   var MSearch = new AMap.PlaceSearch(PlaceSearchOptions); //构造PlaceSearch类
-      //   // eslint-disable-next-line no-undef
-      //   AMap.event.addListener(MSearch, "complete", keywordSearch_CallBack); //返回结果
-      //   MSearch.search("方恒国际中心"); //关键字查询
-      // });
+      map.plugin(["AMap.PlaceSearch"], function () {
+        map.addControl(new AMap.PlaceSearch());
+        var PlaceSearchOptions = {
+          city: "北京", //城市，默认全国
+          type: "",
+          pageSize: 10, //单页显示结果条数，默认10
+          pageIndex: 1, //页码，默认1
+          extensions: "base", //返回结果类型，base表示只返回基本信息，all表示返回所有信息
+        };
+        var MSearch = new AMap.PlaceSearch(PlaceSearchOptions); //构造PlaceSearch类
+        // eslint-disable-next-line no-undef
+        AMap.event.addListener(MSearch, "complete", keywordSearch_CallBack); //返回结果
+        MSearch.search("方恒国际中心"); //关键字查询
+      });
       // 灵活点标记
       var marker = new AMap.ElasticMarker();
       map.addControl(marker);
@@ -112,6 +112,15 @@ onMounted(() => {
       // 行政区查询
       var districtSearch = new AMap.DistrictSearch();
       map.addControl(districtSearch);
+      AMap.plugin(["AMap.DistrictSearch"], function () {
+        var districtSearch = new AMap.DistrictSearch({
+          level: "country",
+          subdistrict: 1,
+        }); //初始化行政区查询对象
+        districtSearch.search("中国", function (status, result) {
+          console.log("111", result);
+        });
+      });
       // 公交查询
       var bus = new AMap.LineSearch();
       map.addControl(bus);

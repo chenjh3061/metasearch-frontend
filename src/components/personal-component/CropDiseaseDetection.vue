@@ -37,7 +37,7 @@ import { h, ref } from "vue";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons-vue";
 import type { UploadChangeParam, UploadProps } from "ant-design-vue";
 import { message } from "ant-design-vue";
-import LoadingHamster from "@/components/personal-component/LoadingHamster.vue";
+import LoadingHamster from "@/components/personal-component/plugins/LoadingHamster.vue";
 
 function getBase64(img: Blob, callback: (base64Url: string) => void) {
   const reader = new FileReader();

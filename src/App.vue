@@ -37,7 +37,7 @@ nav a.router-link-exact-active {
 import { ref } from "vue";
 import GlobalHeader from "@/components/personal-component/globlaHeader.vue";
 import TeleportModal from "@/components/Model.vue";
-import FloatButtons from "@/components/personal-component/FloatButtons.vue";
+import FloatButtons from "@/components/personal-component/plugins/FloatButtons.vue";
 
 const showModal = ref(false);
 </script>

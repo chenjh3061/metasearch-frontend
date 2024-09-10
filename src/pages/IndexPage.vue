@@ -66,7 +66,7 @@ import { ref, watchEffect } from "vue";
 import PostList from "@/components/PostList.vue";
 import PictureList from "@/components/PictureList.vue";
 import UserList from "@/components/UserList.vue";
-import MyDivider from "@/components/MyDivider.vue";
+import MyDivider from "@/components/personal-component/MyDivider.vue";
 import { useRoute, useRouter } from "vue-router";
 import myAxios, { loadingInstance } from "@/plugins/myAxios";
 import AboutView from "@/pages/AboutView.vue";

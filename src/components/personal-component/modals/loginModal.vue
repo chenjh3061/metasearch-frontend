@@ -1,10 +1,5 @@
 <template>
-  <a-modal
-    :visible="isVisible"
-    title="登录"
-    @cancel="handleCancel"
-    footer="{null}"
-  >
+  <a-modal :visible="isVisible" title="登录" @cancel="handleCancel" footer="">
     <div class="background-container">
       <a-card class="Box">
         <a-form :form="loginForm" layout="vertical">
@@ -37,8 +32,9 @@
 
 <script setup lang="ts">
 import { defineEmits, defineProps, ref } from "vue";
-import { UserControllerService } from "../../../generated-client";
+import { UserControllerService } from "../../../../generated-client";
 import { setCache } from "@/common/cache";
+import { message } from "ant-design-vue";
 
 // 接收父组件传递的 props
 const props = defineProps({
@@ -61,7 +57,7 @@ const handleCancel = () => {
 // 处理登录操作
 const handleLogin = async () => {
   // 表单数据
-  console.log("表单数据", loginForm.value);
+  //console.log("表单数据", loginForm.value);
 
   if (!loginForm.value.username || !loginForm.value.password) {
     console.warn("用户名或密码为空");
@@ -87,7 +83,8 @@ const handleLogin = async () => {
       console.log("error", res.message);
     }
   } catch (error) {
-    console.error("登录请求失败", error);
+    console.log("登录失败", error);
+    message.error("登录请求失败");
   }
 };
 </script>
