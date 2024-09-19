@@ -72,23 +72,25 @@ import myAxios, { loadingInstance } from "@/plugins/myAxios";
 import AboutView from "@/pages/AboutView.vue";
 import { message } from "ant-design-vue";
 import CropDiseaseDetection from "@/components/personal-component/CropDiseaseDetection.vue";
-import SeeBattery from "@/components/personal-component/SeeBattery.vue";
 import MapPage from "@/components/personal-pages/MapPage.vue";
 import _ from "lodash";
 import MetaIndex from "@/pages/MetaIndex.vue";
 import { useUser } from "@/Store/user";
+
 const postList = ref([]);
 const userList = ref([]);
 const pictureList = ref([]);
 
 const userStore = useUser();
 const showModal = ref(false);
-watchEffect(() => {
-  console.log(showModal.value);
-});
+
 const route = useRoute();
 const router = useRouter();
 const activeKey = ref(route.params.category || "post");
+const validateParams = (params: any) => {
+  const pSet = new Set(["post", "user", "picture"]);
+  return pSet.has(params);
+};
 
 const initSearchParams = {
   text: "",
@@ -145,16 +147,20 @@ const loadAllData = (params: any) => {
 };
 // 防抖函数
 const debouncedRequest = _.debounce((query: any, type: string) => {
-  myAxios.post("search/all", query).then((res: any) => {
-    if (type === "post") {
-      postList.value = res.dataList;
-    } else if (type === "user") {
-      userList.value = res.dataList;
-    } else if (type === "picture") {
-      pictureList.value = res.dataList;
-    }
-    //console.log(res);
-  });
+  myAxios
+    .post("search/all", query)
+    .then((res: any) => {
+      if (type === "post") {
+        postList.value = res.dataList;
+      } else if (type === "user") {
+        userList.value = res.dataList;
+      } else if (type === "picture") {
+        pictureList.value = res.dataList;
+      }
+    })
+    .catch((err) => {
+      message.error(err);
+    });
 }, 1000);
 /**
  * 加载单类型数据
@@ -181,14 +187,16 @@ const onSearch = (value: string) => {
   router.push({
     query: { ...searchParams.value },
   });
-  console.log(userStore.searchHistory.push(value));
+  //console.log(userStore.searchHistory.push(value));
   loadData(searchParams.value);
 };
 const onTabChange = (key: string) => {
-  router.push({
-    path: `/${key}`,
-    query: { ...searchParams.value },
-  });
+  if (validateParams(key)) {
+    router.push({
+      path: `/${key}`,
+      query: { ...searchParams.value },
+    });
+  }
 };
 // watchEffect负责监听，如果route.query.text改变了就执行
 watchEffect(() => {
